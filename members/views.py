@@ -4,6 +4,8 @@ from .serializers import FromSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Members
+from django.template import loader
+from django.http import HttpResponse
 
 
 class FormRegistration(APIView):
@@ -45,3 +47,16 @@ class FormRegistration(APIView):
             qs_serializer.data , 
             status=status.HTTP_200_OK
         )
+
+
+
+
+
+
+def form_view(request):
+    mymembers= Members.objects.all().values()
+    template = loader.get_template('index.html')
+    context = {
+        "mymember" : mymembers
+    }
+    return HttpResponse(template.render(context , request ))
